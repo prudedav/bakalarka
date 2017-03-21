@@ -1,0 +1,177 @@
+ \input ctustyle
+ \input glosdata
+ \input opmac-bib
+ \worktype [B/CZ]
+ \faculty {F3}
+ \department {Katedra řídicí techniky}
+ \title {Řízení bezkartáčových motorů s deskou Raspberry Pi a Linuxem}
+ \author {Martin Prudek}
+ \date {Duben 2015}
+ \abstractEN {Testing}
+ \abstractCZ {Testovani}
+ \declaration {Prohlasuji, ze jsem pracoval poctive.}
+ \makefront
+ 
+ \def\frac#1#2{{\begingroup#1\endgroup\over#2}} %/frac je LaTex, definujme vlastni
+
+ \chap Motivace
+ 
+ Značné zlevnění a zpřístupnění jednodeskových minipočítačů v posledních letech u nás vyvolalo otázku, zda je možné některé hojně rozšířene modely využít k řídicím aplikacím.
+ 
+  Z široké nabídky zařízení jsme vybrali Raspberry PI model B rev. 2.0. U tohoto počítače již byla prostudována možnost řízení motoru stejnosměrného motoru zachytáváním impulzů inkrementálního rotačního senzoru polohy\cite[Meciar]. Takové řízení je však vlivem nedostatečného výpočetního výkonu možné jen do 14kHz (2100ot/min). Proto bylo zpracování hrubých senzorových dat přesunuto do FPGA obvodu, se kterým Raspberry komunikuje prostřednictvím protokolu SPI.
+  
+  Jednosměrný bezkartáčový motor byl dále nahrazen efektivnějším PMS motorem.
+ 
+ 
+ \chap PMS motory.
+
+PMS (Permanent Magnet Synchronous) motory jsou díky vysoké efektivitě a robustní kontrukci bez kartáčů vhodnou volbou v mnoha řídicích aplikacích\cite[ESD]. 
+
+Komutace probíhá na rozdíl od kartáčových motorů elektronicky, což přínáší vyšší požadavky na řídicí hardware. Odměnou je výšší výkon v poměru k váze, stejně tak točivý moment v poměru k příkonu. Výhodou jsou také nížší hlučnost a delší životnost, protože nedochází k opotřebení kartáčů a mechanických částí komutátoru. \cite[PMSM-Kinetis] Elektronická komutace bývá implementována v procesorovém systému, či speciálním obvodu (FPGA / ASIC)\cite[Meloun].
+ 
+ \sec Matematický popis
+ 
+ Uvažujme $i_{sa}$, $i_{sb}$ a $i_{sc}$ proudy procházející vinutím statoru, platí:
+ 
+ $$ i_{sa} + i_{sb} + i_{sc} =0\eqmark $$
+ 
+ Toto může být vyjádřeno jako vektor v komplexní rovině, potom:
+ 
+ $$ \overline{i} = k(i_{sa}+ai_{sb}+a^2i_{sc}) \eqmark$$
+ kde $a$ a $a^2$ jsou operátory posouvajíci fázi o 120°, $ a=e^{{2j\pi}/{3}} $ a $a^2=e^{{4j\pi}/{3}}$.
+ $k$ je transformační konstanta.
+ 
+ $\overline{i}$ můžeme vyjádřit jako součet jeho reálné a imaginární složky:
+
+ $$ \overline{i}=i_{s\alpha}+ji_{s\beta} \eqmark$$
+ 
+\medskip \clabel[proudy]{Komplexní vyjádření vektoru proudu vinutím statoru}
+\picw=7cm \cinspic currents.png
+\caption/f Komplexní vyjádření vektoru proudu vinutím statoru. $\alpha$ značí reálnou osu a $\beta$ značí imaginární osu.
+\medskip %obrazek zustal tam, kde ma. \midinsert ho posunul
+
+Se znalostí proudů, protékajících jednotlivými fázemi, pak můžeme vypočítat myšlené proudy tekoucí rovnoběžně s imaginární a reálnou osou.
+
+ $$ 
+ \eqalignno{ i_{s\alpha}&=k(i_{sa}-i_{sb}/2-i_{sc}/2) \cr
+  i_{s\alpha}&=(2i_{sa}-i_{sb}-i_{sc})/3 & \eqmark \cr}
+  $$
+ 
+$$
+\eqalignno{ i_{s\beta}&=k\sqrt{3}(i_{sb}-i_{sc})/2 \cr
+	i_{s\beta}&=(i_{sb}-i_{sc})/\sqrt{3}  & \eqmark \cr}
+$$
+
+Pro volbu $k=2/3$.
+
+Pro popis PMS motorů je uvažován ideálně symetrický motor se sinusoidně rozloženým vinutím. Pro takovou idealizaci uvažujeme napětí na vinutích $u_{sa}$, $u_{sb}$ a $u_{sc}$  následující:
+
+$$
+\label[rce1]
+u_{sa}=R_si_{sa}+{{d}\over{dt}}\psi_{sa} \eqmark$$
+$$ u_{sb}=R_si_{sb}+{{d}\over{dt}}\psi_{sb} \eqmark$$
+$$ u_{sc}=R_si_{sc}+{{d}\over{dt}}\psi_{sc} \eqmark$$
+
+kde $\psi_{sa}$,$\psi_{sb}$ a $\psi_{sc}$ jsou magnetické indukční toky vyvolané proudy odpovídajících vinutí. Vyjádření napětí vektorem v Gaussově(komplexní) rovině (Clarkova transformace) bude následující:
+
+ $$ u_{s\alpha}=R_si_{s\alpha}+{{d}\over{dt}}\psi_{s\alpha} \eqmark$$
+ $$ u_{s\beta}=R_si_{s\beta}+{{d}\over{dt}}\psi_{s\beta} \eqmark$$
+ 
+ Přitom složky magnetického indukčního toku budou následující:
+ 
+ $$\psi_{s\alpha} = L_{s\alpha}i_{s\alpha} + \psi_Mcos\theta_r \eqmark$$
+ $$\psi_{s\beta} = L_{s\beta}i_{s\beta} + \psi_Msin\theta_r \eqmark$$
+ 
+ kde $\theta_r$ je úhlová pozice rotoru a $\psi_M$ je magnetický indukční tok rotoru. $L_{s\alpha}$ a $L_{s\beta}$ jsou složky vzájemné indukčnosti rotor-stator.  
+
+Úhlové zrychlení takového motoru o zátěži $T_L$ s $p$ póly připadajícími na každou fázi můžeme vyjádřit jako:
+
+$$
+{d\omega\over{dt}}=
+{p\over{j}}\lbrack{3\over{2}}p(\psi_{s\alpha}i_{s\beta}-\psi_{s\beta}i_{s\alpha})-T_L\rbrack
+$$
+
+Rovnice \ref[rce1].
+
+ 
+
+
+
+
+ 
+ 
+ 
+ 
+ \sec Konstrukce
+ 
+ Text v sekci.
+ 
+ \sec Řízení
+ 
+ 
+
+
+%clabel prida referenci - muzu odkazovat \ref + prida do seznamu tabulek / obrazku
+%midinsert, topinsert - chce na zacatek stranky, kdyz to nejde, prejde na zacatek dalsi
+\midinsert \clabel[RPi_Modely]{Seznam modelů Raspberry Pi}
+\ctable{lccccc}{ 
+	\hfil Model & A & A+ & B & B+ & Bv2 \crl
+		Počet pinů & 26 & 40 & 26 & 40 & 40  \cr
+		RAM paměť [MB]  & 256 & 256 & 256/512 & 512 & 1024   \cr
+		USB porty & 1 & 1 & 2 & 4  & 4 \cr
+		RJ45 & Ne & Ne & Ano & Ano  & Ano \cr
+		Slot na kartu & SDHC & MicroSD & SD & MicroSD & MicroSD   \cr
+		Příkon [W] & 1.5 & 1.0 & 3.5 & 3 & 4  \cr
+		Takt CPU [MHz] & 700 & 700 & 700 & 700 & 900  \cr
+		Jádra CPU [MHz] & 1 & 1 & 1 & 1 & 4  \cr
+		CPU Arch [W] & ARMv6 & ARMv6 & ARMv6 & ARMv6 & ARMv7-A  \cr
+}
+\caption/t Seznam modelů Raspberry Pi 
+\endinsert
+
+
+ \sec Linux a RT vylepšení
+ 
+ \sec FPGA
+ 
+ Text v sekci.\cite[AGL125] \cite[Libero_ug] \cite[rt-wiki]
+ 
+ \chap Použité řešení
+ 
+ Text v sekci.
+ 
+ \chap Závěr
+ 
+
+ 
+
+
+
+ \bibchap
+ \usebib/c (simple) mybase
+
+\app Zadání
+
+ \sec pokyny
+ 
+Na platformě procesorové desky Raspberry Pi implementujte systém pro řízení bezkartáčových (BLDC/PMSM) motorů.
+
+1. Pro komunikaci procesorového systému s výkonovým hardwarem realizovaným s využitím programovatelného obvodu (FPGA) vyberte vhodný protokol a periferii.
+
+2. Pro vybraný způsob komunikace navrhněte ovladač na straně jádra Linux a obvodový návrh ve VHDL na straně FPGA.
+
+3. Integrujte bloky pro snímání polohy, řízení výkonových stupňů a měření proudu do FPGA návrhu.
+
+4. S využitím navržených periferií realizujte řízení bezkartáčového motoru.
+
+5. Vyžaduje se podrobná technická dokumentace včetně přípravy podkladů pro prezentaci včetně videozáznamu.
+
+\app Zkratky\par \makeglos %vlozi novou prilohu
+
+
+
+ 
+ 
+ \bye
+  
+ 
