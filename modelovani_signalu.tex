@@ -3,10 +3,10 @@
  \input opmac-bib
  \worktype [B/CZ]
  \faculty {F3}
- \department {Katedra řídicí techniky}
- \title {Řízení bezkartáčových motorů s deskou Raspberry Pi a Linuxem}
- \author {Martin Prudek}
- \date { 2015}
+ \department {Katedra elektromagnetického pole}
+ \title {Modelování bezdrátového spojení mezi družicí a říční lodí}
+ \author {David Prudek}
+ \date {duben 2017}
  \abstractEN {Testing}
  \abstractCZ {Testovani}
  \declaration {Prohlasuji, ze jsem pracoval poctive.}
@@ -16,40 +16,128 @@
 
  \chap Motivace
  
- Značné zlevnění a zpřístupnění jednodeskových minipočítačů v posledních letech u nás vyvolalo otázku, zda je možné některé hojně rozšířene modely využít k řídicím aplikacím.
- 
-  Z široké nabídky zařízení jsme vybrali Raspberry PI model B rev. 2.0. U tohoto počítače již byla prostudována možnost řízení motoru stejnosměrného motoru zachytáváním impulzů inkrementálního rotačního senzoru polohy\cite[Meciar]. Takové řízení je však vlivem nedostatečného výpočetního výkonu možné jen do 14kHz (2100ot/min). Proto bylo zpracování hrubých senzorových dat přesunuto do FPGA obvodu, se kterým Raspberry komunikuje prostřednictvím protokolu SPI.
-  
-  Jednosměrný bezkartáčový motor byl dále nahrazen efektivnějším PMS motorem.
- 
- 
- \chap PMS motory.
+ S narůstajícím počtem mobilních zařízení, ať se již jedná o mobilní
+telefony, GPS navigace nebo jiné mobilní radiostanice a zvyšujícími se nároky
+na kvalitu přenosu signálu, vzniká potřeba teoreticky modelovat šíření signálu
+pro konkrétní prostředí. Pro mobilní zařízení je nejdůležitější se zabývat
+modelováním šíření podél frekventovaných dopravních cest, jako jsou dálnice,
+hlavní železniční tratě nebo frekventované říční trasy.
+	
+	Především z důvodu, že pro dálniční nebo železniční sítě je již v této době
+hotovo poměrně velké množství modelů, zabývá se tato práce vícecestným
+šířením v říčním korytu.
 
-PMS (Permanent Magnet Synchronous) motory jsou díky vysoké efektivitě a robustní kontrukci bez kartáčů vhodnou volbou v mnoha řídicích aplikacích\cite[ESD]. 
+	Model v prostředí MATLAB zahrnuje několik základních situací šíření
+signálu od vysílače (pro nás satelit) k přijímači (pro nás loď plující středem
+koryta). Základní situace pro koryto řeky: Přímý paprsek (přímá viditelnost mezi
+anténami), paprsek odražený od vodní hladiny a paprsky odražené od stěn
+koryta. Posledním typem je dvojitý doraz (od stěny koryta a následně od vodní
+hladiny).Simulace pak obsahuje také model mostu zjednodušený na dvě
+dokonale ostré hrany, na nichž dochází k difrakci. Základní situace pro most
+jsou: Difrakce na horní a spodní hraně mostu (po difrakci se signál šíří dále
+přímo k přijímači), odraz vlny od vodní hladiny po difrakci na hranách mostu.
 
-Komutace probíhá na rozdíl od kartáčových motorů elektronicky, což přínáší vyšší požadavky na řídicí hardware. Odměnou je výšší výkon v poměru k váze, stejně tak točivý moment v poměru k příkonu. Výhodou jsou také nížší hlučnost a delší životnost, protože nedochází k opotřebení kartáčů a mechanických částí komutátoru. \cite[PMSM-Kinetis] Elektronická komutace bývá implementována v procesorovém systému, či speciálním obvodu (FPGA / ASIC)\cite[Meloun].
+	V jednotlivých částech práce jsou prezentovány situace, které v simulaci
+uvažujeme a jsou v nich zmíněny základní vztahy použité pro výpočet.
+Pro každou část jsou uvedeny grafy přijatého výkonu přijímačem.
  
- \sec Matematický popis
  
- Uvažujme $i_{sa}$, $i_{sb}$ a $i_{sc}$ proudy procházející vinutím statoru, platí:
- 
- $$ i_{sa} + i_{sb} + i_{sc} =0\eqmark $$
- 
- Toto může být vyjádřeno jako vektor v komplexní rovině, potom:
- 
- $$ \overline{i} = k(i_{sa}+ai_{sb}+a^2i_{sc}) \eqmark$$
- kde $a$ a $a^2$ jsou operátory posouvajíci fázi o 120°, $ a=e^{{2j\pi}/{3}} $ a $a^2=e^{{4j\pi}/{3}}$.
- $k$ je transformační konstanta.
- 
- $\overline{i}$ můžeme vyjádřit jako součet jeho reálné a imaginární složky:
+ \chap Odraz elektromagnetické vlny
 
- $$ \overline{i}=i_{s\alpha}+ji_{s\beta} \eqmark$$
+K odrazu nějakého vlnění dochází obecně vždy na rozhraní dvou
+prostředí s různými vlastnostmi. Pro elektromagnetickou vlnu jsou tyto
+vlastnosti permitivita ($\varepsilon$) a permeabilita ($\mu$). Na těchto parametrech závisí, jak
+velká část elektromagnetické vlny projde rozhraním do prostředí s jinými
+parametry a jaká část se od rozhraní odrazí. Podle obr. 1 dopadá na rozhraní
+dvou prostředí elektromagnetická vlna pod úhlem $\theta$ i Z Maxwellových rovnic
+vyplývá, že po dopadu na rozhraní vzniknou z dopadající vlny dvě vlny nové
+(odražená a procházející) a to se stejnou frekvencí jako vlna dopadající.
+Vzhledem k tomu, že vlna procházející do druhého prostředí je zatlumena
+ještě dalšími interakcemi s překážkami, ji do simulací nezahrnujeme (měla by
+jen zanedbatelný vliv).
  
-\medskip \clabel[proudy]{Komplexní vyjádření vektoru proudu vinutím statoru}
-\picw=7cm \cinspic currents.png
-\caption/f Komplexní vyjádření vektoru proudu vinutím statoru. $\alpha$ značí reálnou osu a $\beta$ značí imaginární osu.
+\chap Difrakce
+
+ 
+ \chap Vícecestné šíření
+ 
+Přítomnost zemské atmosféry a terénních překážek (např.: povrch země,
+zástavba, vodní plochy) v blízkosti přenosové cesty má za následek interakci
+elektromagnetické vlny s překážkami a vznik tzv. vícecestného šíření.
+V takovýchto situacích dochází k přijetí také druhotných vln odražených od
+překážek. Ve velmi komplikovaném terénu (typicky městská zástavba) dochází
+k přijetí nekonečně mnoha odražených vln. V takovém případě volíme pro
+simulace jen takové odražené vlny, které zásadně ovlivní výsledek (čím vícekrát
+se vlna odrazí a po čím delší dráze se šíří, tím se vlna více utlumí).
+
+Situace vícecestného šíření se dá zjednodušit pomocí tzv. paprskové
+optiky. V té se využíva zjednodušení vlny na diskrétní paprsek (zanedbání šířky
+Fresnelovy zóny). Toto používáme ale pouze v případě, že je vlnová délka
+podstatně menší než velikosti objektů účastnících se interakce. [2]
+
+Na straně přijímací antény se vlny přijaté z jednotlivých cest šíření
+vektorové sčítají (1).
+
+ 
+	$$ \overline{E}=\sum\limits_{i} \overline{E_l}\eqmark $$
+ 
+Kde $\overline{E_l}$ je příspěvek od jednotlivých paprsků a $\overline{E}$ je výsledný vektor intenzity v místě přijímací antény [2].
+\bigskip
+Problematika vícecestého šíření take znamená, že má každá cesta šíření
+jinou délku. Tudíž se každou cestou šíří signál po jiný časový úsek a nesená
+informace je přijata pokaždé v jiném čase. Toto není ale pro tuto prácí
+podstatné, týká se to spíše následného zpracování signálu.
+\bigskip
+V modelu neuvažujeme šířku Fresnelovy zóny, pouze spojnice bodů.
+Toto zjednodušení pomocí paprskové optiky funguje ale pouze pokud považujeme všechny objekty se kterými vlna interaguje za mnohem větší než je vlnová délka signálu.
+Zastínění mostem je realizováno poklesem intenzity elektrického pole přímého
+paprsku při průchodu pod mostem na nulu.
+
+\sec Šíření na přímou viditelnost
+
+Šíření na přímou viditelnost je nejjednodušší případ, který může
+v našem případě nastat. Při této situaci se šíří signál pouze po spojnici vysílače
+s přijímačem. Průběh závislosti přijatého signálu na vzájemné vzdálenosti
+vysílače a přijímače lze jednoduše vypočítat jen z útlumu způsobeného volným
+prostorem.
+
+$$
+\label[rovprima]
+E=\frac{E_0}{d_pr}e^{-jkd_pr}\eqmark $$
+
+Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta šíření a $d_pr$ přímá vzdálenost vysílací a přijímací antény [1], [2].
+ 
+ 
+ 
+\medskip \clabel[primavid]{Nasimulovaný průběh signálu při šíření pouze přímého paprsku bez zastínění mostem.}
+\picw=11cm \cinspic primaviditelnost.png
+\caption/f Nasimulovaný průběh signálu při šíření pouze přímého paprsku bez zastínění mostem. Simulace na základě vztahu \ref[rovprima]
 \medskip %obrazek zustal tam, kde ma. \midinsert ho posunul
 
+\medskip \clabel[primavid2]{Nasimulovaný průběh signálu při šíření pouze přímého paprsku se zastíněním mostem.}
+\picw=11cm \cinspic primaviditelnost_sezastinenimmostem.png
+\caption/f Nasimulovaný průběh signálu při šíření pouze přímého paprsku se zastíněním mostem. Simulace na základě vztahu \ref[rovprima]
+\medskip
+
+
+\sec Dvoupaprskový model
+
+Přidáním jednou odraženého paprsku dostáváme tzv. dvoupaprskový
+model. Průběh přijatého signálu v závislosti na vzdálenosti je zde složitější.
+Přímý paprsek je doplněn o odražený, který se šíří po delší trajektorii a při
+odrazu od překážky se mění jeho fáze na opačnou. Komplexní signály
+se v místě jejich přijetí anténou sčítají, čímž vzniká typické kolísání hladiny
+signálu při změně vzdálenosti od vysílače. Při úplném odražení vlny
+od překážky by se v místech s přesně opačnou fází signálů blížila hodnota
+přijatého výkonu k nule. Situaci popisuje vztah \ref[dvou]
+
+$$ 
+\label[dvou]
+E=\frac{E_0}{d_pr}e^{-jkd_pr}+\frac{E_0}{d_od}e^{-jkd_od}Re^{-j\psi}\eqmark $$
+
+Kde $d_od$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komplexní činitel odrazu, $R$ je činitel odrazu [2].
+
+\bigskip
 Se znalostí proudů, protékajících jednotlivými fázemi, pak můžeme vypočítat myšlené proudy tekoucí rovnoběžně s imaginární a reálnou osou.
 
  $$ 
