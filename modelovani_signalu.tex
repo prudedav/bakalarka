@@ -93,7 +93,8 @@ Toto zjednodušení pomocí paprskové optiky funguje ale pouze pokud považujem
 Zastínění mostem je realizováno poklesem intenzity elektrického pole přímého
 paprsku při průchodu pod mostem na nulu.
 
-\sec Šíření na přímou viditelnost
+
+\label[primaviditelnost] \sec Šíření na přímou viditelnost
 
 Šíření na přímou viditelnost je nejjednodušší případ, který může
 v našem případě nastat. Při této situaci se šíří signál pouze po spojnici vysílače
@@ -103,9 +104,9 @@ prostorem.
 
 $$
 \label[rovprima]
-E=\frac{E_0}{d_pr}e^{-jkd_pr}\eqmark $$
+E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}\eqmark $$
 
-Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta šíření a $d_pr$ přímá vzdálenost vysílací a přijímací antény [1], [2].
+Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta šíření a $d_{pr}$ přímá vzdálenost vysílací a přijímací antény [1], [2].
  
  
  
@@ -120,7 +121,7 @@ Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta
 \medskip
 
 
-\sec Dvoupaprskový model
+\label[dvoupaprsk] \sec Dvoupaprskový model
 
 Přidáním jednou odraženého paprsku dostáváme tzv. dvoupaprskový
 model. Průběh přijatého signálu v závislosti na vzdálenosti je zde složitější.
@@ -133,104 +134,270 @@ přijatého výkonu k nule. Situaci popisuje vztah \ref[dvou]
 
 $$ 
 \label[dvou]
-E=\frac{E_0}{d_pr}e^{-jkd_pr}+\frac{E_0}{d_od}e^{-jkd_od}Re^{-j\psi}\eqmark $$
+E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}+\frac{E_0}{d_{od}}e^{-jkd_{od}}Re^{-j\psi}\eqmark $$
 
-Kde $d_od$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komplexní činitel odrazu, $R$ je činitel odrazu [2].
+Kde $d_{od}$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komplexní činitel odrazu, $R$ je činitel odrazu [2].
 
-\bigskip
-Se znalostí proudů, protékajících jednotlivými fázemi, pak můžeme vypočítat myšlené proudy tekoucí rovnoběžně s imaginární a reálnou osou.
+\medskip \clabel[dvojcest1]{Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku bez zastineni mostem}
+\picw=11cm \cinspic dvojcestne.png
+\caption/f Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku bez zastínění mostem
+\medskip
 
- $$ 
- \eqalignno{ i_{s\alpha}&=k(i_{sa}-i_{sb}/2-i_{sc}/2) \cr
-  i_{s\alpha}&=(2i_{sa}-i_{sb}-i_{sc})/3 & \eqmark \cr}
-  $$
- 
-$$
-\eqalignno{ i_{s\beta}&=k\sqrt{3}(i_{sb}-i_{sc})/2 \cr
-	i_{s\beta}&=(i_{sb}-i_{sc})/\sqrt{3}  & \eqmark \cr}
-$$
+\medskip \clabel[dvojcest2]{Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku se zastinenim mostem}
+\picw=11cm \cinspic dvojcestne_sezastinenimmostem.png
+\caption/f Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku se zastíněním mostem
+\medskip
 
-Pro volbu $k=2/3$.
+\sec Odraz od stěn koryta 
 
-Pro popis PMS motorů je uvažován ideálně symetrický motor se sinusoidně rozloženým vinutím. Pro takovou idealizaci uvažujeme napětí na vinutích $u_{sa}$, $u_{sb}$ a $u_{sc}$  následující:
+Přidáním dvou paprsků odražených od stěn koryta vzniká
+již komplikovaná funkce, kterou nelze snadno analyticky určit. Pro simulaci
+v prostředí MATLAB to znamená přidat do součtu komplexních intenzit dvě
+intenzity odražených paprsků od stěn. Hlavním parametrem pro jejich výpočet
+je sklon stěny koryta vůči vodorovné hladině. V simulaci zatím uvažuji
+nekonečně rozlehlé roviny stěn koryta. Problémovou částí je zde také situace,
+kdy se úhel odklonu stěny koryta velmi blíží nule. (Pro úhel roven nule splyne
+odraz od stěny s odrazem od vody diskutovaným ve dvoupaprskovém modelu.
+Pro tuto situaci je do simulace přidána podmínka nerovnosti úhlu nule.) Pro úhly
+blížící se nule nastane situace, kdy by k odrazu ve skutečnosti nedošlo (bod
+odrazu se nachází pod hladinou vody). V těchto případech se tedy simulace
+dopouští nepřesnosti. Pro výslednou přijatou intenzitu (uvažujeme stejné úhly
+sklonu rovin) dostaneme vztah \ref[odrazkoryto]. Vztahy (4), (5), (6) a (7) je pak možné využít pro výpočet geometrie koryta.
 
-$$
-\label[rce1]
-u_{sa}=R_si_{sa}+{{d}\over{dt}}\psi_{sa} \eqmark$$
-$$ u_{sb}=R_si_{sb}+{{d}\over{dt}}\psi_{sb} \eqmark$$
-$$ u_{sc}=R_si_{sc}+{{d}\over{dt}}\psi_{sc} \eqmark$$
 
-kde $\psi_{sa}$,$\psi_{sb}$ a $\psi_{sc}$ jsou magnetické indukční toky vyvolané proudy odpovídajících vinutí. Vyjádření napětí vektorem v Gaussově(komplexní) rovině (Clarkova transformace) bude následující:
-
- $$ u_{s\alpha}=R_si_{s\alpha}+{{d}\over{dt}}\psi_{s\alpha} \eqmark$$
- $$ u_{s\beta}=R_si_{s\beta}+{{d}\over{dt}}\psi_{s\beta} \eqmark$$
- 
- Přitom složky magnetického indukčního toku budou následující:
- 
- $$\psi_{s\alpha} = L_{s\alpha}i_{s\alpha} + \psi_Mcos\theta_r \eqmark$$
- $$\psi_{s\beta} = L_{s\beta}i_{s\beta} + \psi_Msin\theta_r \eqmark$$
- 
- kde $\theta_r$ je úhlová pozice rotoru a $\psi_M$ je magnetický indukční tok rotoru. $L_{s\alpha}$ a $L_{s\beta}$ jsou složky vzájemné indukčnosti rotor-stator.  
-
-Úhlové zrychlení takového motoru o zátěži $T_L$ s $p$ póly připadajícími na každou fázi můžeme vyjádřit jako:
 
 $$
-{d\omega\over{dt}}=
-{p\over{j}}\lbrack{3\over{2}}p(\psi_{s\alpha}i_{s\beta}-\psi_{s\beta}i_{s\alpha})-T_L\rbrack
+\label[odrazkoryto]
+E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}+\frac{E_0}{d_{od}}e^{-jkd_{od}}R_ve^{-j\psi}+2\frac{E_0}{d_{odk}}e^{-jkd_{odk}}R_ke^{-j\psi}\eqmark $$
+
 $$
+\label[dod2]
+d_{od2}=\sqrt{d_2^2+(h_{S2}+h_{L2})^2}\eqmark$$
 
-Rovnice \ref[rce1].
+$$
+\label[d2]
+d_{2}=\sqrt{d_{pr}^2-(h_{S2}-h_{L2})^2}\eqmark$$
 
- 
+$$
+\label[hs2]
+h_{S2}=(a*tan \alpha+h_{S1})cos \alpha\eqmark $$
+
+$$
+\label[hl2]
+h_{L2}=(b*tan \alpha+h_{L1})cos \alpha\eqmark $$
+
+Kde veličina $a$ je vzdálenost kolmého průmětu satelitu na vodní hladinu
+od břehu řeky (pro nás je to polovina šířky řeky, $a = b$ ), $b$ je vzdálenost lodě
+od břehu , $h_{S2}$ je výška satelutu vůči stěně koryta , $h_{L2}$ je výška lodě vůči stěně koryta , $d_{pr}$ je délka přímého spoje satelitu a lodě , $d_2$ je vzdálenost kolmých průmětů lodě a satelitu na rovinu stěny koryta , $d_{odk}$ je délka paprsku odraženého od stěny koryta.
+
+\medskip \clabel[koryto]{Vizualizace koryta}
+\picw=11cm \cinspic bocni.png
+%\caption/f Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku se zastíněním mostem
+\medskip
+
+\medskip %\clabel[koryto]{Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku se zastinenim mostem}
+\picw=5cm \cinspic zepredu.png
+\caption/f Vizualizace odrazu od stěny koryta a přímého paprsku a) boční pohled na koryto řeky, b) pohled zepředu
+\medskip
+
+
+\medskip \clabel[odrazykorytograf]{Simulace přijatého výkonu při odrazu od obou stěn koryta}
+\picw=11cm \cinspic odrazy_dtenykoryta.png
+\caption/f Simulace přijatého výkonu při odrazu od obou stěn koryta, pro simulaci byl použit vztah \ref[odrazkoryto]
+\medskip
+
+\sec Odraz od stěny koryta a následně od vodní hladiny
+
+
+Tato situace je nejsložitější, kterou pro odražené paprsky uvažujeme.
+Útlum odrazů od překážek je již tak velký, že se na součtu přijatého výkonu
+odražený signál projeví jen minimálně. Do vztahu pro výpočet je v tomto případě
+nutné přidat další faktor ovlivňující změnu fáze signálu a jeho útlum.
+Vztah bude v tomto případě vypadat následovně \ref[dvojodraz].
+
+$$ \label[dvojodraz]
+E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}+\frac{E_0}{d_{od}}e^{-jkd_{od}}R_ve^{-j\psi}+2\frac{E_0}{d_{odk}}e^{-jkd_{odk}}R_ke^{-j\psi}+\frac{E_0}{d_{2od}}e^{-jkd_{2od}}R_ke^{-j\psi}R_ve^{-j\psi}\eqmark  $$
+
+Kde $d_{2od}$ je délka dráhy dvakrát odraženého paprsku.
+
+\medskip \clabel[odrazydvojite]{Simulace přijatého výkonu při započtení také odrazu od stěny koryta a následně od vodní hladiny}
+\picw=11cm \cinspic odrazy_dvojiteodrazy.png
+\caption/f Simulace přijatého výkonu při započtení také odrazu od stěny koryta a následně od vodní hladiny
+\medskip
+
+\sec Difrakce na hranách mostu
 
 
 
-
- 
- 
- 
- 
- \sec Konstrukce
- 
- Text v sekci.
- 
- \sec Řízení
- 
- 
+Difrakce na hranách mostu vychází z tzv. Huygensova principu, který
+popisuje jev šíření elektromagnetické vlny i za překážku v cestě. Difrakce je
+silně ovlivňována tvarem překážky která vlnu zastiňuje [2].
 
 
-%clabel prida referenci - muzu odkazovat \ref + prida do seznamu tabulek / obrazku
-%midinsert, topinsert - chce na zacatek stranky, kdyz to nejde, prejde na zacatek dalsi
-\midinsert \clabel[RPi_Modely]{Seznam modelů Raspberry Pi}
+Řešení difrakce na překážce obecného tvaru je tak složitě, že se
+omezujeme na řešení pouze ve zjednodušených případech. Ve všech našich
+výpočtech uvažujeme pouze dokonale ostrou a dokonale absorbující překážku.
+Tento případ je nejjednodušší a nazývá se difrakcí na ostrém břitu (knife edge
+diffraction) [1].
+
+\medskip \clabel[obrazekdiffrakce]{Geometrie difrakce na ostré překážce.}
+\picw=11cm \cinspic diffraction_obrazek.png
+\caption/f Geometrie difrakce na ostré překážce. Převzato z literatury [1].
+\medskip
+
+Míra zastínění přímého spoje je definována pomocí parametru v \ref[mirazastineni] [2].
+
+$$
+\label[mirazastineni]
+ v=h\sqrt{\frac{2}{\lambda}(\frac{1}{d_1}+\frac{1}{d_2})}\eqmark $$
+
+Kde je $\lambda$ vlnová délka a ostatní parametry jsou znázorněné na Obr. \ref[obrazekdiffrakce].
+
+Řešení je poměrem intenzity elektrického pole $E$ v bodě přijetí signálu $P$
+při zastínění překážkou a intenzity $E_p$ v bodě $P$ pro situaci bez překážky. Tento poměr vyjadřuje vztah \ref[rovdiff] [2] .
+
+$$
+\label[rovdiff]
+\frac{E}{E_p}=\frac{1+j}{2}\int_v^\infty e^{-j\frac{\pi}{2}s^2} ds \eqmark $$
+
+Tento integrál řešíme dále numericky pomocí Sinového a Kosinového
+Fresnelova integrálu. Dostáváme následující zjednodušený vztah \ref[rovdiffzjedn] [4].
+
+$$
+\label[rovdiffzjedn]
+ \frac{E}{E_p}=\frac{1+j}{2}[(\frac{1}{2}-C(v))-j(\frac{1}{2})-S(v)]\eqmark $$
+
+Kde $C(v)$ je Kosínový \ref[cosinovy] a $S(v)$ Sinový \ref[sinovy] Fresnelův integrál [4].
+
+
+$$ 
+\label[cosinovy]
+C(v)=\int_0^v cos(\frac{\pi s^2}{2})\eqmark $$
+
+$$ 
+\label[sinovy]
+S(v)=\int_0^v sin(\frac{\pi s^2}{2})\eqmark $$
+
+Po numerickém vyřešení dostáváme následující grafy závislostí $v$ na
+poměru intenzit $\frac{E}{E_p}$ (Obr. \ref[zastinovanidiff]) a útlumu difrakcí $L$ (Obr. \ref[zastinovanidiffutlum]).
+
+\medskip \clabel[zastinovanidiff]{Závislost poměru intenzit na koeficientu zastínění}
+\picw=11cm \cinspic prubeh_v_zastinovani.png
+\caption/f Závislost poměru intenzit na koeficientu zastínění, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
+\medskip
+
+\medskip \clabel[zastinovanidiffutlum]{Závislost útlumu difrakcí na koeficientu zastínění}
+\picw=11cm \cinspic utlum_na_v.png
+\caption/f Závislost útlumu difrakcí na koeficientu zastínění, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
+\medskip
+
+Z grafů závislostí poměru intenzit a útlumu na koeficientu zastínění
+vyplývá, že pro koeficienty v hodnot blížících se k $-\infty$ se situace velmi podobá volnému prostoru [2]. Pro nás ale taková situace nenastane. Uvažujeme totiž
+difrakci na hranách mostu pouze jako příspěvek k celkové intenzitě elektrického
+pole v bodě přijímací antény, do přímého paprsku tedy difrakci nezahrnujeme a
+při výpočtu přírůstku intenzity díky difrakci uvažujeme zastínění přímého spoje.
+
+
+Pro hodnoty $v$ vyšších hodnot (obvykle větší než 2) se dá použít také
+následující zjednodušený vztah pro poměr intenzit [2].
+
+$$ 
+\label[aproxdiff]
+\mid\frac{E}{E_p}\mid=\frac{1}{2\pi v}\eqmark $$
+
+\medskip \clabel[zastinovanidiffutlumsaprox]{Závislost útlumu difrakcí na koeficientu zastínění a aproximace pro $v>2$}
+\picw=11cm \cinspic prubeh_v_zastinovani_saproximaci.png
+\caption/f Závislost útlumu difrakcí na koeficientu zastínění a aproximace pro $v>2$, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy], \ref[aproxdiff]
+\medskip
+
+V grafu vidíme, že pro hodnoty $v>2$ obě charakteristiky v podstatě splývají.
+
+\secc Difrakce na spodní a vrchní hraně mostu
+
+V simulaci uvažujeme difrakci na dvou hranách mostu, které jsou
+dokonale ostré. Pomocí výše uvedených vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy] jsme provedli výpočet přírůstku intenzity elektrického pole od obou případů difrakce a sečetli ho s intenzitou získanou v předchozích částech simulace.
+
+
+Uvažujeme, že k difrakci dochází jen v případech, kdy se přijímač nachází
+na opačné straně vůči mostu než vysílač.
+
+\medskip \clabel[difrakcemost]{Závislost přijatého výkonu na vzdálenosti pro přidaný případ difrakce na hranách mostu}
+\picw=11cm \cinspic difrakce.png
+\caption/f Závislost přijatého výkonu na vzdálenosti pro přidaný případ difrakce na hranách mostu, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
+\medskip
+
+\secc Difrakce na hranách mostu a odraz od vodní hladiny
+
+Pro tuto situaci uvažujeme, že dojde k difrakci na hraně mostu a následně
+k odrazu elektromagnetické vlny od vodní hladiny k přijímací anténě.
+
+
+Hodnoty intenzity počítáme jako difrakci pro bod odrazu od vodní hladiny
+a dále pomocí činitele odrazu, útlumu volným prostorem (diskutováno
+v sekcích \ref[primaviditelnost], \ref[dvoupaprsk]) dopočítáme intenzitu v místě přijetí.
+
+\medskip \clabel[difrakceodraz]{Závislost přijatého výkonu na vzdálenosti pro difrakci a následný odraz od vodní hladiny}
+\picw=11cm \cinspic difrakce_odrazodvody_spravne.png
+\caption/f Závislost přijatého výkonu na vzdálenosti pro difrakci a následný odraz od vodní hladiny, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
+\medskip
+
+\chap Simulace
+
+\midinsert \clabel[datasimulace]{Data použitá pro simulaci}
 \ctable{lccccc}{ 
-	\hfil Model & A & A+ & B & B+ & Bv2 \crl
-		Počet pinů & 26 & 40 & 26 & 40 & 40  \cr
-		RAM paměť [MB]  & 256 & 256 & 256/512 & 512 & 1024   \cr
-		USB porty & 1 & 1 & 2 & 4  & 4 \cr
-		RJ45 & Ne & Ne & Ano & Ano  & Ano \cr
-		Slot na kartu & SDHC & MicroSD & SD & MicroSD & MicroSD   \cr
-		Příkon [W] & 1.5 & 1.0 & 3.5 & 3 & 4  \cr
-		Takt CPU [MHz] & 700 & 700 & 700 & 700 & 900  \cr
-		Jádra CPU [MHz] & 1 & 1 & 1 & 1 & 4  \cr
-		CPU Arch [W] & ARMv6 & ARMv6 & ARMv6 & ARMv6 & ARMv7-A  \cr
+	\hfil Parametr & Hodnota & Označení & Poznámka  \crl
+		Vzdálenost & 0-5000m & & proměnná vzdálenost lodi a satelitu  \cr
+		Krok výpočtu & 0,8m &&krok změny vzdálenost při simulaci    \cr
+		Výška lodi &1m&&výška antény nad hladinou řeky \cr
+		Výška satelitu  \cr
+		Výška horní strany mostu &   \cr
+		Výška dolní strany mostu &  \cr
+		Vzdálenost horní hrany mostu &  \cr
+		Vzdálenost dolní hrany mostu &  \cr
+		Šířka mostu &  \cr
+		Činitel odrazu vody   \cr
+		Činitel odrazu koryta  \cr
+		Frekvence   \cr
+		Úhel odchylky stěny koryta   \cr
+		Vzdálenost lodi od behu   \cr
+		Počáteční intenzita elektrického pole   \cr
 }
-\caption/t Seznam modelů Raspberry Pi 
+\caption/t Data použitá pro simulaci
 \endinsert
 
 
- \sec Linux a RT vylepšení
- 
- \sec FPGA
- 
- Text v sekci.\cite[AGL125] \cite[Libero_ug] \cite[rt-wiki]
- 
- \chap Použité řešení
- 
- Text v sekci.
- 
- \chap Závěr
- 
+\bigskip
+\bigskip
+\bigskip
+\bigskip
 
+ 
+ \chap Závěrvěr
+ 
+Cílem tohoto projektu je realizování simulace průběhu přijatého výkonu
+pohybujícího se přijímače nad vodní hladinou v korytu řeky s mostem. Simulace
+zahrnuje několik základních situací, které mohou pro uvažovaný objekt nastat.
+Použitým prostředím pro simulace je program MATLAB. Pro zjednodušení
+považujeme most za kvádr a uvažujeme u něj dvě dokonale ostré hrany na
+nichž dochází k difrakci signálu. Pro případ podjezdu lodi pod mostem
+uvažujeme v modelu pouze zastínění přímé viditelnosti.
+
+
+Výsledky simulací odpovídají předpokladu zvětšujícího se kolísání signálu
+s každou přidanou cestou šíření. Vzhledem k tomu, že v reálném prostředí by
+byl satelit ve velké vzdálenosti nad zemským povrchem a ve výsledné přijaté
+úrovni signálu by mělo šíření difrakcí větší podíl (kvůli komplikovanější geometrii
+terénu) bylo by vhodnější použít spíše nižší frekvence v řádech jednotek GHz.
+Také z grafů vyplývá, že pro vícenásobné odrazy (nebo například difrakce a
+odraz) se již charakter křivky příliš nemění a cesty využívající pro šíření ještě
+další odrazy již pravděpodobně budou mít na křivku zanedbatelný vliv.
+
+
+V navazující práci by bylo vhodné rozšířit množství uvažovaných cest
+šíření a ověřit, že pro mnohonásobné odrazy (více než trojnásobné) se již přijatý
+výkon bude měnit jen zanedbatelně. Dalším rozšířením je samozřejmě přidání
+dalších situací šíření signálu pro koryto a most. Také by bylo vhodné realizovat
+experiment a tím ověřit nasimulovaná data
  
 
 
@@ -240,19 +407,7 @@ Rovnice \ref[rce1].
 
 \app Zadání
 
- \sec pokyny
  
-Na platformě procesorové desky Raspberry Pi implementujte systém pro řízení bezkartáčových (BLDC/PMSM) motorů.
-
-1. Pro komunikaci procesorového systému s výkonovým hardwarem realizovaným s využitím programovatelného obvodu (FPGA) vyberte vhodný protokol a periferii.
-
-2. Pro vybraný způsob komunikace navrhněte ovladač na straně jádra Linux a obvodový návrh ve VHDL na straně FPGA.
-
-3. Integrujte bloky pro snímání polohy, řízení výkonových stupňů a měření proudu do FPGA návrhu.
-
-4. S využitím navržených periferií realizujte řízení bezkartáčového motoru.
-
-5. Vyžaduje se podrobná technická dokumentace včetně přípravy podkladů pro prezentaci včetně videozáznamu.
 
 \app Zkratky\par \makeglos %vlozi novou prilohu
 
