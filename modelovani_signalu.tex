@@ -59,7 +59,7 @@ jen zanedbatelný vliv).
 \chap Difrakce
 
  
- \chap Vícecestné šíření
+\label [vicecest] \chap Vícecestné šíření
  
 Přítomnost zemské atmosféry a terénních překážek (např.: povrch země,
 zástavba, vodní plochy) v blízkosti přenosové cesty má za následek interakci
@@ -341,29 +341,35 @@ v sekcích \ref[primaviditelnost], \ref[dvoupaprsk]) dopočítáme intenzitu v m
 \caption/f Závislost přijatého výkonu na vzdálenosti pro difrakci a následný odraz od vodní hladiny, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
 \medskip
 
-\chap Simulace
+\sec Použité Hodnoty 
 
-\midinsert \clabel[datasimulace]{Data použitá pro simulaci}
+Tabulka hodnot použitých pro simulaci veškerých průněhů v kapitole \ref [vicecest].
+
+\medskip \clabel[datasimulace]{Data použitá pro simulaci}
 \ctable{lccccc}{ 
 	\hfil Parametr & Hodnota & Označení & Poznámka  \crl
 		Vzdálenost & 0-5000m & & proměnná vzdálenost lodi a satelitu  \cr
 		Krok výpočtu & 0,8m &&krok změny vzdálenost při simulaci    \cr
 		Výška lodi &1m&&výška antény nad hladinou řeky \cr
-		Výška satelitu  \cr
-		Výška horní strany mostu &   \cr
-		Výška dolní strany mostu &  \cr
-		Vzdálenost horní hrany mostu &  \cr
-		Vzdálenost dolní hrany mostu &  \cr
-		Šířka mostu &  \cr
-		Činitel odrazu vody   \cr
-		Činitel odrazu koryta  \cr
-		Frekvence   \cr
-		Úhel odchylky stěny koryta   \cr
-		Vzdálenost lodi od behu   \cr
-		Počáteční intenzita elektrického pole   \cr
+		Výška satelitu &100m& \cr
+		Výška horní strany mostu &50m&   \cr
+		Výška dolní strany mostu &40m&  \cr
+		Vzdálenost horní hrany mostu &450m&  \cr
+		Vzdálenost dolní hrany mostu &500m&  \cr
+		Šířka mostu &50m&  \cr
+		Činitel odrazu vody  &-0,5& \cr
+		Činitel odrazu koryta &-0,8& \cr
+		Frekvence &1000 MHz  \cr
+		Úhel odchylky stěny koryta &15$^\circ$&  \cr
+		Vzdálenost lodi od behu&  10m& \cr
+		Počáteční intenzita elektrického pole& 10V/m & \cr
 }
 \caption/t Data použitá pro simulaci
-\endinsert
+\medskip
+
+\chap Simulace
+
+
 
 
 \bigskip
@@ -412,7 +418,7 @@ experiment a tím ověřit nasimulovaná data
 \app Zkratky\par \makeglos %vlozi novou prilohu
 
 
-
+h
  
  
  \bye
