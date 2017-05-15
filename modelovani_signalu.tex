@@ -16,13 +16,13 @@
 
  \chap Motivace
  
+ 
  S narůstajícím počtem mobilních zařízení, ať se již jedná o mobilní
 telefony, GPS navigace nebo jiné mobilní radiostanice a zvyšujícími se nároky
 na kvalitu přenosu signálu, vzniká potřeba teoreticky modelovat šíření signálu
 pro konkrétní prostředí. Pro mobilní zařízení je nejdůležitější se zabývat
 modelováním šíření podél frekventovaných dopravních cest, jako jsou dálnice,
 hlavní železniční tratě nebo frekventované říční trasy.
-	
 	Především z důvodu, že pro dálniční nebo železniční sítě je již v této době
 hotovo poměrně velké množství modelů, zabývá se tato práce vícecestným
 šířením v říčním korytu.
@@ -58,6 +58,24 @@ jen zanedbatelný vliv).
  
 \chap Difrakce
 
+Difrakce je obecně jev, při kterém dochází k šíření nějakého vlnění i za překážku, která jí stojí v cestě (tedy i do oblasti která je geometricky zastíněna).
+Tento jev je možné sledovat u všech typů vlnění (mechanické, elektromagnetické,..).
+Vlna je difrakcí nejvíce ovlinňována předměty, které jsou rozměrově podobné její vlnové délce.
+
+Jev difrakce vzniká díky platnosti Huygensova principu, který říká, že každý bod do kterého vlna dospěje se stává sám zdrojem vlnění. Zřejmě nejjednosušší případ difrakce se dá sledovat na štěrbiě v překážce, která stojí v cestě šíření. Ve chvíli, kdy vlna dospěje k překážce, se stává štěrbina bodovým zdrojem vlnění za překážkou.
+
+\medskip \clabel[sterbina]{Difrakce vlnění na štěrbině}
+\picw=5cm \cinspic diffraction.png
+\caption/f Difrakce vlnění na štěrbině, štěrbina sama se stává zdrojem vlnění (převzato z internetu)
+\medskip
+ 
+Dalším příkladem difrakce, který je analyticky ještě relativně snadno řešitelný, je difrakce na dvojštěrbině. U tohoto případu se na výsledném šíření vln za překážkou velmi výrazně projevuje interference vlnění od obou štěrbin (bodových zdrojů).
+
+\medskip \clabel[dvojsterbina]{Difrakce na dvojštěrbině}
+\picw=9cm \cinspic dvojsterbina2.png
+\caption/f Difrakce na dvojštěrbině s naznačeným průběhem intenzity pole za překážkou ovlivněné interferencí (převzato z internetu)
+\medskip
+ 
  
 \label [vicecest] \chap Vícecestné šíření
  
@@ -73,15 +91,16 @@ se vlna odrazí a po čím delší dráze se šíří, tím se vlna více utlum�
 Situace vícecestného šíření se dá zjednodušit pomocí tzv. paprskové
 optiky. V té se využíva zjednodušení vlny na diskrétní paprsek (zanedbání šířky
 Fresnelovy zóny). Toto používáme ale pouze v případě, že je vlnová délka
-podstatně menší než velikosti objektů účastnících se interakce. [2]
+podstatně menší než velikosti objektů účastnících se interakce. \cite [pechac]
 
 Na straně přijímací antény se vlny přijaté z jednotlivých cest šíření
-vektorové sčítají (1).
+vektorové sčítají \ref [vicecce].
 
  
-	$$ \overline{E}=\sum\limits_{i} \overline{E_l}\eqmark $$
+	$$ \label[vicecce]
+	 \overline{E}=\sum\limits_{i} \overline{E_l}\eqmark $$
  
-Kde $\overline{E_l}$ je příspěvek od jednotlivých paprsků a $\overline{E}$ je výsledný vektor intenzity v místě přijímací antény [2].
+Kde $\overline{E_l}$ je příspěvek od jednotlivých paprsků a $\overline{E}$ je výsledný vektor intenzity v místě přijímací antény \cite [pechac].
 \bigskip
 Problematika vícecestého šíření take znamená, že má každá cesta šíření
 jinou délku. Tudíž se každou cestou šíří signál po jiný časový úsek a nesená
@@ -106,7 +125,7 @@ $$
 \label[rovprima]
 E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}\eqmark $$
 
-Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta šíření a $d_{pr}$ přímá vzdálenost vysílací a přijímací antény [1], [2].
+Kde $E_0$ je počáteční amplituda v místě vysílací antény, $k$ konstanta šíření a $d_{pr}$ přímá vzdálenost vysílací a přijímací antény \cite [saunders], \cite [pechac].
  
  
  
@@ -136,7 +155,7 @@ $$
 \label[dvou]
 E=\frac{E_0}{d_{pr}}e^{-jkd_{pr}}+\frac{E_0}{d_{od}}e^{-jkd_{od}}Re^{-j\psi}\eqmark $$
 
-Kde $d_{od}$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komplexní činitel odrazu, $R$ je činitel odrazu [2].
+Kde $d_{od}$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komplexní činitel odrazu, $R$ je činitel odrazu \cite [pechac].
 
 \medskip \clabel[dvojcest1]{Nasimulovaný průběh signálu při šíření přímého a odraženého paprsku bez zastineni mostem}
 \picw=11cm \cinspic dvojcestne.png
@@ -150,6 +169,11 @@ Kde $d_{od}$ je délka trajektorie odraženého paprsku, $Re^{-j\psi}$ je komple
 
 \sec Odraz od stěn koryta 
 
+\medskip \clabel[vizualizacekoryto]{Vizualizace koryta řeky}
+\picw=9cm \cinspic model_tukan1.png
+\caption/f Vizualizace koryta řeky
+\medskip
+
 Přidáním dvou paprsků odražených od stěn koryta vzniká
 již komplikovaná funkce, kterou nelze snadno analyticky určit. Pro simulaci
 v prostředí MATLAB to znamená přidat do součtu komplexních intenzit dvě
@@ -162,7 +186,7 @@ Pro tuto situaci je do simulace přidána podmínka nerovnosti úhlu nule.) Pro 
 blížící se nule nastane situace, kdy by k odrazu ve skutečnosti nedošlo (bod
 odrazu se nachází pod hladinou vody). V těchto případech se tedy simulace
 dopouští nepřesnosti. Pro výslednou přijatou intenzitu (uvažujeme stejné úhly
-sklonu rovin) dostaneme vztah \ref[odrazkoryto]. Vztahy (4), (5), (6) a (7) je pak možné využít pro výpočet geometrie koryta.
+sklonu rovin) dostaneme vztah \ref[odrazkoryto]. Vztahy \ref [dod2], \ref [d2], \ref [hs2] a \ref [hl2] je pak možné využít pro výpočet geometrie koryta.
 
 
 
@@ -231,21 +255,21 @@ Kde $d_{2od}$ je délka dráhy dvakrát odraženého paprsku.
 
 Difrakce na hranách mostu vychází z tzv. Huygensova principu, který
 popisuje jev šíření elektromagnetické vlny i za překážku v cestě. Difrakce je
-silně ovlivňována tvarem překážky která vlnu zastiňuje [2].
+silně ovlivňována tvarem překážky která vlnu zastiňuje \cite [pechac].
 
 
 Řešení difrakce na překážce obecného tvaru je tak složitě, že se
 omezujeme na řešení pouze ve zjednodušených případech. Ve všech našich
 výpočtech uvažujeme pouze dokonale ostrou a dokonale absorbující překážku.
 Tento případ je nejjednodušší a nazývá se difrakcí na ostrém břitu (knife edge
-diffraction) [1].
+diffraction) \cite [saunders].
 
 \medskip \clabel[obrazekdiffrakce]{Geometrie difrakce na ostré překážce.}
 \picw=11cm \cinspic diffraction_obrazek.png
-\caption/f Geometrie difrakce na ostré překážce. Převzato z literatury [1].
+\caption/f Geometrie difrakce na ostré překážce. Převzato z literatury \cite [saunders].
 \medskip
 
-Míra zastínění přímého spoje je definována pomocí parametru v \ref[mirazastineni] [2].
+Míra zastínění přímého spoje je definována pomocí parametru v \ref[mirazastineni] \cite [pechac].
 
 $$
 \label[mirazastineni]
@@ -254,20 +278,20 @@ $$
 Kde je $\lambda$ vlnová délka a ostatní parametry jsou znázorněné na Obr. \ref[obrazekdiffrakce].
 
 Řešení je poměrem intenzity elektrického pole $E$ v bodě přijetí signálu $P$
-při zastínění překážkou a intenzity $E_p$ v bodě $P$ pro situaci bez překážky. Tento poměr vyjadřuje vztah \ref[rovdiff] [2] .
+při zastínění překážkou a intenzity $E_p$ v bodě $P$ pro situaci bez překážky. Tento poměr vyjadřuje vztah \ref[rovdiff] \cite [pechac] .
 
 $$
 \label[rovdiff]
 \frac{E}{E_p}=\frac{1+j}{2}\int_v^\infty e^{-j\frac{\pi}{2}s^2} ds \eqmark $$
 
 Tento integrál řešíme dále numericky pomocí Sinového a Kosinového
-Fresnelova integrálu. Dostáváme následující zjednodušený vztah \ref[rovdiffzjedn] [4].
+Fresnelova integrálu. Dostáváme následující zjednodušený vztah \ref[rovdiffzjedn] \cite [tutorial],\cite [modeling].
 
 $$
 \label[rovdiffzjedn]
  \frac{E}{E_p}=\frac{1+j}{2}[(\frac{1}{2}-C(v))-j(\frac{1}{2})-S(v)]\eqmark $$
 
-Kde $C(v)$ je Kosínový \ref[cosinovy] a $S(v)$ Sinový \ref[sinovy] Fresnelův integrál [4].
+Kde $C(v)$ je Kosínový \ref[cosinovy] a $S(v)$ Sinový \ref[sinovy] Fresnelův integrál \cite [tutorial],\cite [modeling].
 
 
 $$ 
@@ -299,7 +323,7 @@ při výpočtu přírůstku intenzity díky difrakci uvažujeme zastínění př
 
 
 Pro hodnoty $v$ vyšších hodnot (obvykle větší než 2) se dá použít také
-následující zjednodušený vztah pro poměr intenzit [2].
+následující zjednodušený vztah pro poměr intenzit \cite [pechac].
 
 $$ 
 \label[aproxdiff]
@@ -317,6 +341,10 @@ V grafu vidíme, že pro hodnoty $v>2$ obě charakteristiky v podstatě splývaj
 V simulaci uvažujeme difrakci na dvou hranách mostu, které jsou
 dokonale ostré. Pomocí výše uvedených vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy] jsme provedli výpočet přírůstku intenzity elektrického pole od obou případů difrakce a sečetli ho s intenzitou získanou v předchozích částech simulace.
 
+\medskip \clabel[vizualizacedif]{Vizualizace difrakce na vrchní a spodní hraně mostu}
+\picw=11cm \cinspic vizualizace_dif1.png
+\caption/f Vizualizace difrakce na vrchní a spodní hraně mostu
+\medskip
 
 Uvažujeme, že k difrakci dochází jen v případech, kdy se přijímač nachází
 na opačné straně vůči mostu než vysílač.
@@ -331,6 +359,10 @@ na opačné straně vůči mostu než vysílač.
 Pro tuto situaci uvažujeme, že dojde k difrakci na hraně mostu a následně
 k odrazu elektromagnetické vlny od vodní hladiny k přijímací anténě.
 
+\medskip \clabel[vizualizacedifodraz]{Vizualizace difrakce na vrchní a spodní hraně mostu s následnám odrazem od vodí hladiny}
+\picw=11cm \cinspic vizualizace_dif2.png
+\caption/f Vizualizace difrakce na vrchní a spodní hraně mostu s následnám odrazem od vodí hladiny
+\medskip
 
 Hodnoty intenzity počítáme jako difrakci pro bod odrazu od vodní hladiny
 a dále pomocí činitele odrazu, útlumu volným prostorem (diskutováno
@@ -341,25 +373,36 @@ v sekcích \ref[primaviditelnost], \ref[dvoupaprsk]) dopočítáme intenzitu v m
 \caption/f Závislost přijatého výkonu na vzdálenosti pro difrakci a následný odraz od vodní hladiny, vychází ze vztahů \ref[rovdiffzjedn], \ref[cosinovy], \ref[sinovy]
 \medskip
 
+\sec Změna výšky přijímací antény
+
+Simulace přijaté úrovně signálu v závislosti na měnící se výšce přijímací antény nad vodní hladinou.
+
+Simulace zobrazená grafem na obr. \ref [zmenavysky] uvažuje hypoteticky výšku několikanásobně větší, než je výška mostu (loď by tudíž nebyla schopna podjezu). Toto měřítko bylo použito pouze pro zobrazení většího rozsahu změn přijaté úrovně signálu.
+
+\medskip \clabel[zmenavysky]{Závislost přijatého výkonu na výškové poloze přijímací antény}
+\picw=11cm \cinspic vyska.png
+\caption/f Závislost přijatého výkonu na výškové poloze přijímací antény
+\medskip
+
 \sec Použité Hodnoty 
 
 Tabulka hodnot použitých pro simulaci veškerých průněhů v kapitole \ref [vicecest].
 
 \medskip \clabel[datasimulace]{Data použitá pro simulaci}
 \ctable{lccccc}{ 
-	\hfil Parametr & Hodnota & Označení & Poznámka  \crl
-		Vzdálenost & 0-5000m & & proměnná vzdálenost lodi a satelitu  \cr
-		Krok výpočtu & 0,8m &&krok změny vzdálenost při simulaci    \cr
-		Výška lodi &1m&&výška antény nad hladinou řeky \cr
-		Výška satelitu &100m& \cr
-		Výška horní strany mostu &50m&   \cr
-		Výška dolní strany mostu &40m&  \cr
-		Vzdálenost horní hrany mostu &450m&  \cr
-		Vzdálenost dolní hrany mostu &500m&  \cr
-		Šířka mostu &50m&  \cr
-		Činitel odrazu vody  &-0,5& \cr
-		Činitel odrazu koryta &-0,8& \cr
-		Frekvence &1000 MHz  \cr
+	\hfil Parametr & Hodnota &  Poznámka  \crl
+		Vzdálenost & 0-5000m &  proměnná vzdálenost lodi a satelitu  \cr
+		Krok výpočtu & 0,8m &krok změny vzdálenost při simulaci    \cr
+		Výška lodi &1m&výška antény nad hladinou řeky \cr
+		Výška satelitu &100m&výška satelitu nad hladinou řeky \cr
+		Výška horní strany mostu &50m& výška horní hrany nad hladinou řeky  \cr
+		Výška dolní strany mostu &40m&  výška spodní strany nad hladinou řeky\cr
+		Vzdálenost horní hrany mostu &450m& vzdálenost horní hrany mostu od vysílače   \cr
+		Vzdálenost dolní hrany mostu &500m& vzdálenost spodní hrany mostu od vysílače \cr
+		Šířka mostu &50m& ze vzdáleností horní a spodní hrany mostu \cr
+		Činitel odrazu vody  &-0,5&značeno $R_v $ \cr
+		Činitel odrazu koryta &-0,8&značeno $R_k$ \cr
+		Frekvence &1000 MHz& \cr
 		Úhel odchylky stěny koryta &15$^\circ$&  \cr
 		Vzdálenost lodi od behu&  10m& \cr
 		Počáteční intenzita elektrického pole& 10V/m & \cr
@@ -367,16 +410,46 @@ Tabulka hodnot použitých pro simulaci veškerých průněhů v kapitole \ref [
 \caption/t Data použitá pro simulaci
 \medskip
 
-\chap Simulace
 
 
 
+\chap Analýza experimentu
+
+Tato kapitola je věnována analýze dat naměřených ve vlakovém koridoru. Experiment je použit k ověření funkčnosti vytvořeného modelu.
+
+Experiment měřený v korytě vlakového koridoru s několika mosty je terénním profilem srovnatelný s uvažovanou situací lodě plovoucí pod mostem.
+
+Analyzovaný experiment nicméně zahrnuje relativně dlouhý úsek koridoru, který jako celek nesplňuje požadavek na přímou trasu s jedním mostem. Pro ověření funkčnosti simulace musíme tedy zvolit pouze část měřeného úseku. Celý analyzovaný úsek, včetně výsledků měření je zobrazen na obr. \ref [celyusek].
 
 \bigskip
-\bigskip
-\bigskip
-\bigskip
 
+\medskip \clabel[celyusek]{Úsek analyzovaný experimentem s výsledky měření}
+\picw=11cm \cinspic experiment930mhz.png
+\caption/f Celý úsek analyzovaný experimentem s výsledky měření 
+\medskip
+
+\bigskip
+Podle terénního profilu zobrazeného na obr. \ref [celyusek] vypadá nejpřijatelněji úsek kolem třetího mostu (na obrázku označený jako Br3). Tento úsek tedy volíme pro další zpracování.
+
+\medskip \clabel[merenivykonexp]{Experimentálně změřený přijatý výkon}
+\picw=11cm \cinspic merenyprijaty.png
+\caption/f Experimentálně změřený přijatý výkon, pro celý měřený úsek
+\medskip
+
+\bigskip
+Graf na obr. \ref [merenivykonexp] zobrazuje změřený přijatý výkon anténou umístěnou na střeše vlaku v závislosti na vzdálenosti od vysílače.
+
+Z poklesů úrovně přijatého výkonu můžeme ve vlakovém koridoru zhruba odhadnout polohu jednotlivých mostů.
+
+\medskip \clabel[mereniutlumexp]{Experimentálně změřený útlum šířením}
+\picw=11cm \cinspic merenyutlumsvolg.png
+\caption/f Experimentálně změřený útlum šířením, se srovnáním teoretického útlumu volným prostorem
+\medskip
+ 
+\bigskip
+Graf na obr. \ref [mereniutlumexp] zobrazuje závislost útlumu signálu na vzdálenosti od vysílače. V grafu je také pro srovnání vynesena závislost útlumu volným prostorem na vzdálenosti.
+
+ \cite [modeling]
  
  \chap Závěrvěr
  
