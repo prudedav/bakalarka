@@ -7,14 +7,15 @@
  \title {Modelování bezdrátového spojení mezi družicí a říční lodí}
  \author {David Prudek}
  \date {duben 2017}
- \abstractEN {Testing}
+ \abstractEN {testing}
  \abstractCZ {Testovani}
- \declaration {Prohlasuji, ze jsem pracoval poctive.}
+ \declaration {Prohlašuji, ze jsem práci vypracoval samostatně a že jsem uvedl veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.}
+ 
  \makefront
  
  \def\frac#1#2{{\begingroup#1\endgroup\over#2}} %/frac je LaTex, definujme vlastni
 
- \chap Motivace
+ \chap Úvod
  
  
  S narůstajícím počtem mobilních zařízení, ať se již jedná o mobilní
@@ -395,8 +396,8 @@ Tabulka hodnot použitých pro simulaci veškerých průněhů v kapitole \ref [
 		Krok výpočtu & 0,8m &krok změny vzdálenost při simulaci    \cr
 		Výška lodi &1m&výška antény nad hladinou řeky \cr
 		Výška satelitu &100m&výška satelitu nad hladinou řeky \cr
-		Výška horní strany mostu &50m& výška horní hrany nad hladinou řeky  \cr
-		Výška dolní strany mostu &40m&  výška spodní strany nad hladinou řeky\cr
+		Výška horní hrany mostu &50m& výška horní hrany nad hladinou řeky  \cr
+		Výška dolní hrany mostu &40m&  výška spodní hrany nad hladinou řeky\cr
 		Vzdálenost horní hrany mostu &450m& vzdálenost horní hrany mostu od vysílače   \cr
 		Vzdálenost dolní hrany mostu &500m& vzdálenost spodní hrany mostu od vysílače \cr
 		Šířka mostu &50m& ze vzdáleností horní a spodní hrany mostu \cr
@@ -415,6 +416,8 @@ Tabulka hodnot použitých pro simulaci veškerých průněhů v kapitole \ref [
 
 \chap Analýza experimentu
 
+\sec Experiment ve vlakovém koridoru
+
 Tato kapitola je věnována analýze dat naměřených ve vlakovém koridoru. Experiment je použit k ověření funkčnosti vytvořeného modelu.
 
 Experiment měřený v korytě vlakového koridoru s několika mosty je terénním profilem srovnatelný s uvažovanou situací lodě plovoucí pod mostem.
@@ -423,6 +426,8 @@ Analyzovaný experiment nicméně zahrnuje relativně dlouhý úsek koridoru, kt
 
 \bigskip
 
+
+
 \medskip \clabel[celyusek]{Úsek analyzovaný experimentem s výsledky měření}
 \picw=11cm \cinspic experiment930mhz.png
 \caption/f Celý úsek analyzovaný experimentem s výsledky měření 
@@ -430,6 +435,20 @@ Analyzovaný experiment nicméně zahrnuje relativně dlouhý úsek koridoru, kt
 
 \bigskip
 Podle terénního profilu zobrazeného na obr. \ref [celyusek] vypadá nejpřijatelněji úsek kolem třetího mostu (na obrázku označený jako Br3). Tento úsek tedy volíme pro další zpracování.
+
+\medskip \clabel[antenavys]{Vysílací anténa}
+\picw=11cm \cinspic char_vysilaci.png
+\caption/f Směrová charakteristika a ilustrační fotografie vysílací antény
+\medskip
+
+\medskip \clabel[antenaprij]{Přijímací anténa anténa}
+\picw=11cm \cinspic char_prijimaci.png
+\caption/f Směrová charakteristika a ilustrační fotografie přijímací antény
+\medskip
+
+Na obr. \ref [antenavys], \ref [antenaprij] jsou zobrazeny charakteristiky vysílací a přijímací antény použité při měření experimentu. Z charakteristik je viditelné, že přijímací anténa (obr. \ref [antenaprij]) umístěná na střeše pohybujícího se vlaku má velmi simetrickou charakteristiku, tudíž u ní nebude příliš docházet k neočekávanému kolísání signálu. Vysílací anténa ale tak simetrickou charakteristiku nemá, může zanést tedy do srovnání experimentu se simulací větší chybu. 
+
+\sec Výsledky experimentu
 
 \medskip \clabel[merenivykonexp]{Experimentálně změřený přijatý výkon}
 \picw=11cm \cinspic merenyprijaty.png
@@ -448,6 +467,55 @@ Z poklesů úrovně přijatého výkonu můžeme ve vlakovém koridoru zhruba od
  
 \bigskip
 Graf na obr. \ref [mereniutlumexp] zobrazuje závislost útlumu signálu na vzdálenosti od vysílače. V grafu je také pro srovnání vynesena závislost útlumu volným prostorem na vzdálenosti.
+
+\sec Srovnání výsledků experimentu se simulací
+
+Pro srovnávání experimentálně naměřených dat se simulací využíváme pouze rovný úsek koridoru s jedním mostem. Jako optimální byl zvolen úsek ve vzdálenosti 450 až 1200 metrů od vysílače. S mostem ve zdálenosti VZDALENOSTI 
+
+\medskip \clabel[mersimvod]{Experiment srovnaný se simulaci pro volný prostor}
+\picw=11cm \cinspic mereny_volnyprostor.png
+\caption/f Experiment srovnaný se simulaci pro volný prostor
+\medskip
+
+\medskip \clabel[mersim]{Nasimulované hodnoty srovnané s experimentem}
+\picw=11cm \cinspic mereny_simulovany_difrakce.png
+\caption/f Nasimulované hodnoty srovnané s experimentem
+\medskip
+
+Grafy na obr.  \ref [mersimvod], \ref [mersim] zobrazují srovnání experimentálně změřených dat (červené křivky) ve vlakovém koridoru s daty teoreticky nasimulovanými v prostředí MATLAB (modré křivky). Ze závislostí se zá, že simulace relativně vystihuje trend křivky experimentálně změřených hodnot. Pro závislost na obr. \ref [mersimvod] platí, že naměřené hodnoty oscilují kolem simulace pro volný prostor. Toto odpovídá předpokladu vícecestného šíření, kdy se signály přijaté z různých směrů komplexně sčítají, čímž vznikají na trase místa s nejen nižšími hodnotami (odečtení signálů v protifázi), ale také situace většího přijatého výkonu než pro volný prostor (signály se málo fázově liší a tedy se přijatá úroveň vzyšuje). Takováto situace mohla nastat například pro případ vlaku vzdalujícího se od vysílače a přibližujícího se k mostu, kde mohl mít vliv odraz od čelní strany mostu.
+
+Pro měření byla v experimentu použita anténa s reálnými parametry, u které musíme uvažovat různé vlastnosti pro směry ze kterých signál přichází. Směrová charakteristika je znázorněna  na obr. OBRAZEK ANTENA. Pro simulaci, která uvažuje příjem isotropickou anténou (nulová směrovost, zisk 0dBi) mohly tyto reálné paramtery způsobit neočekávané výchylky v naměřených datech. Stejná situace zde nastává také pro vysílací anténu umístěnou pevně na telekomunikačním stožáru, její charakteristika je zobrazen na obr. OBRAZEKCHAR
+
+Téměř periodické kolísání přijatého signálu vycházejícího ze simulace znázorněné na obr. \ref [mersim] způsobené odrazem signálu od povrchu koryta (pro říční koryto voda, pro vlakový koridor pevné dno) mohlo být do značné míry ovlivněno umístěním přijímací antény nízko (30 cm) nad střechou vlaku, což způsobilo částečné odstínění odraženého paprsku.
+\bigskip
+\bigskip
+
+\sec Parametry experimentu
+
+
+Tabulka hodnot použitých pro srovnání s experimentem.
+Hodnoty byly získány z dokumentace experimentu a z vyhodnocovacích skriptů v prostředí MATLAB.
+
+\bigskip
+
+\medskip \clabel[dataexperiment]{Parametry vyhodnocovaného experimentu}
+\ctable{lccccc}{ 
+	\hfil Parametr & Hodnota &  Poznámka  \crl
+		Vzdálenost & 0-1200m &  proměnná vzdálenost lodi a satelitu  \cr
+		Krok výpočtu & 0,1m &krok změny vzdálenost při simulaci    \cr
+		Výška vlaku &4,1m&výška antény nad dnem koryta korydoru \cr
+		Výška vysílače &33m&výška vysíslače nad dnem korydoru \cr
+		Výška horní hrany mostu &12,36m& výška horní hrany mostu  \cr
+		Výška dolní hrany mostu &10,41m&  výška spodní hrany mostu\cr
+		Vzdálenost horní hrany mostu &450m& vzdálenost horní hrany mostu od vysílače   \cr
+		Vzdálenost dolní hrany mostu &500m& vzdálenost spodní hrany mostu od vysílače \cr
+		Šířka mostu &9,6m& ze vzdáleností horní a spodní hrany mostu \cr
+		Činitel odrazu vody  &-0,2&značeno $R_v $ \cr
+		Frekvence &930 MHz& \cr
+		Počáteční intenzita elektrického pole& 5V/m & \cr
+}
+\caption/t Parametry vyhodnocovaného experimentu
+\medskip
 
  \cite [modeling]
  
@@ -477,6 +545,7 @@ V navazující práci by bylo vhodné rozšířit množství uvažovaných cest
 výkon bude měnit jen zanedbatelně. Dalším rozšířením je samozřejmě přidání
 dalších situací šíření signálu pro koryto a most. Také by bylo vhodné realizovat
 experiment a tím ověřit nasimulovaná data
+
  
 
 
