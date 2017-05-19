@@ -1,3 +1,7 @@
 *.log
 *.ref
 *.lbr
+grafy/*
+hodnoty
+CrossingBridgePredictor_BJTU_V112016_student2/*
+modelovani_signalu.pdf
