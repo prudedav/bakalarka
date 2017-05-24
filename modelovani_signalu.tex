@@ -8,7 +8,11 @@
  \author {David Prudek}
  \date {duben 2017}
  \abstractEN {testing}
- \abstractCZ {Testovani}
+ \abstractCZ {Práce se zabává šířením signálu jako elektromagnetické vlny mezi satelitem a lodí, pro prostředí říčního koryta s mostem. Loď plující korytem řeky přijímá alektromagnetické vlnění vyslané satelitem, které je ovlivněno celou řadou faktorů. Mezi ně patří především ztráty volným prostorem, difrakce, nebo vícecestné šíření. Všechny tyto mechanizmy závisí především na polze v korytě řeky, ve které se v danou chvíli lod nachází. Pro zjištění výkonových bilancí takového spoje, je nutné všechny mechanizmy zahrnou do modelu který je teoreticky předpovídá. Pro takovouto simulaci byl zvolen software MATLAB.
+ 
+ V simulačním prostředí byl pak vytvořen program, schopný na základě zadaných parametrů vyhodnotit výkonovou bilanci bezdrátového spoje. Výstupem je matice dat přijatých výkonů a jim odpovídající hodnoty polohy přijímače v korytě řeky. Model umožňuje měnit téměř veškeré parametry scény, kterými jsou např. frekvence, rozměry scény a mostu, sklony stěn koryta, nebo činitele odrazu jednotlivých materiálů. Vlastnosti a funkčnost modelu jsou ověřeny na reálném experimentu měřeném v prostředí vlakového koridoru, který je tvarem scény podobný korytě řeky. 
+ 
+ }
  \declaration {Prohlašuji, ze jsem práci vypracoval samostatně a že jsem uvedl veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.}
  
  \makefront
@@ -42,6 +46,29 @@ přímo k přijímači), odraz vlny od vodní hladiny po difrakci na hranách mo
 uvažujeme a jsou v nich zmíněny základní vztahy použité pro výpočet.
 Pro každou část jsou uvedeny grafy přijatého výkonu přijímačem.
  
+\chap Teoretická východiska pro modelování šíření vln pro rádiové spojení mezi družicí a lodí v prostředí vnitrozemských vodních cest
+ 
+ 
+ 
+\sec Modelování rádiových spojů
+ 
+\sec Optický model
+
+\sec Odraz elektromagnetického vlnění
+
+\secc Snellův zákon
+
+\secc Difuzní odraz
+
+\secc Závislost na stuktuře povrchu
+
+\secc Činitel odrazu R 
+
+\sec Difrakce
+
+\secc Difrakce na dokonale ostré překážce (Knife edge)
+
+\secc Příklad Zjednodušené situace lodě jedoucí středem koryta
  
  \chap Odraz elektromagnetické vlny
 
