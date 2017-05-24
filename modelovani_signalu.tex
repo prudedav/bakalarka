@@ -8,7 +8,7 @@
  \author {David Prudek}
  \date {duben 2017}
  \abstractEN {testing}
- \abstractCZ {Práce se zabává šířením signálu jako elektromagnetické vlny mezi satelitem a lodí, pro prostředí říčního koryta s mostem. Loď plující korytem řeky přijímá alektromagnetické vlnění vyslané satelitem, které je ovlivněno celou řadou faktorů. Mezi ně patří především ztráty volným prostorem, difrakce, nebo vícecestné šíření. Všechny tyto mechanizmy závisí především na polze v korytě řeky, ve které se v danou chvíli lod nachází. Pro zjištění výkonových bilancí takového spoje, je nutné všechny mechanizmy zahrnou do modelu který je teoreticky předpovídá. Pro takovouto simulaci byl zvolen software MATLAB.
+ \abstractCZ {Práce se zabává šířením signálu jako elektromagnetické vlny mezi satelitem a lodí, pro prostředí říčního koryta s mostem. Loď plující korytem řeky přijímá alektromagnetické vlnění vyslané satelitem, které je ovlivněno celou řadou faktorů. Mezi ně patří především ztráty volným prostorem, difrakce, nebo vícecestné šíření. Všechny tyto mechanizmy závisí nejvíce na polze v korytě řeky, ve které se v danou chvíli lod nachází. Pro zjištění výkonových bilancí takového spoje, je nutné všechny mechanizmy zahrnou do modelu, který je teoreticky předpovídá. Pro takovouto simulaci byl zvolen software MATLAB.
  
  V simulačním prostředí byl pak vytvořen program, schopný na základě zadaných parametrů vyhodnotit výkonovou bilanci bezdrátového spoje. Výstupem je matice dat přijatých výkonů a jim odpovídající hodnoty polohy přijímače v korytě řeky. Model umožňuje měnit téměř veškeré parametry scény, kterými jsou např. frekvence, rozměry scény a mostu, sklony stěn koryta, nebo činitele odrazu jednotlivých materiálů. Vlastnosti a funkčnost modelu jsou ověřeny na reálném experimentu měřeném v prostředí vlakového koridoru, který je tvarem scény podobný korytě řeky. 
  
@@ -21,7 +21,24 @@
 
  \chap Úvod
  
+ Návrh a realizace bezdrátevého spojení je reálně velice složitá záležitost. Elektromagnetická vlna, nesoucí přenášený signál, je v prostoru ovlivňována celou řadou faktorů. Základní faktory ovlivňující takový přenos jsou sice víceméně popsány, ale prostředí, kterým se vlna šíří nelze považovat za stacionární. Známé vztahy tudíž nebudou platit zcela bezchybně, protože nejsou schopny dokonale vystihnout situaci, ve které se v danou chvíli přenosová cesta nachází.
  
+ Možností jak modelovat bezdrátová spojení je celá řada. V současnosti existuje několik základních modelů, které se zabývají bezdrátovými spoji. Za zínku zde stojí především optický model (\ref [opt]), který zjednodušuje výpočty tím, že elektromagnetickou vlnu považuje za světelný paprsek se zanedbatelnou šířkou svazku. Detailněji jsou modely rozebrány v kapitole \ref [mrs].
+ 
+ Pro modelování využíváme několik jevů vycházejících z vlastností elektromagnetických vln. Mezi ně patří především odraz vlny od překážky, rozebraný v kapitole \ref [odr] (zde je rozebrán také Snellův zákon, činitel odrazu R, nebo vliv struktury povrchu na odraz), který je základním faktorem vzniku vícecestného šíření. Dále difrakce diskutovaná v kapitole \ref [dif_ob], uplatňující se na hranách mostu (hrany jsou považovány za dokonale ostré, pro obecný tvar je výpočet podstatně složitější).
+ 
+ V kapitole \ref [scenar] je popsán nami modelovaný scénář říčního koryta s mostem, definujeme zede uvažované cesty šíření a popisujeme terénní profil scény, včetné zavedení hlavních proměnných parametrů.
+ 
+ Samotný model je vytvořen v simulačním prostředí MATLAB a je popsán v kapitole \ref [pop_model]. Zde jsou podrobně rozebrány jednotlivé cesty šíření a popsán mechanizmus simulace.
+ Pro každou situaci jsou zde uvedeny teoretické vztahy použité pro výpočet výkonové bilance.
+ 
+ Simulaci založenou na teoretických předpokladech je nutné ověřit pomocí reálně naměřených dat. Pro náš scénář lodě plovoucí korytem řeky ale nejsou žádná data k dispozici, byl proto použit experiment z vlakového koridoru, který je modelované scéně relativné podobný. Experiment je popsán v kapitole \ref [an_exp] která obsahuje také srovnání experimentu se simulací (podkapitola \ref [srov_vys]).
+ 
+ 
+ 
+\bigskip
+\bigskip
+\bigskip
  S narůstajícím počtem mobilních zařízení, ať se již jedná o mobilní
 telefony, GPS navigace nebo jiné mobilní radiostanice a zvyšujícími se nároky
 na kvalitu přenosu signálu, vzniká potřeba teoreticky modelovat šíření signálu
@@ -49,11 +66,13 @@ Pro každou část jsou uvedeny grafy přijatého výkonu přijímačem.
 \chap Teoretická východiska pro modelování šíření vln pro rádiové spojení mezi družicí a lodí v prostředí vnitrozemských vodních cest
  
  
- 
+\label [mrs]
 \sec Modelování rádiových spojů
  
+\label [opt]
 \sec Optický model
 
+\label [odr]
 \sec Odraz elektromagnetického vlnění
 
 \secc Snellův zákon
@@ -64,6 +83,7 @@ Pro každou část jsou uvedeny grafy přijatého výkonu přijímačem.
 
 \secc Činitel odrazu R 
 
+\label [dif_ob]
 \sec Difrakce
 
 \secc Difrakce na dokonale ostré překážce (Knife edge)
